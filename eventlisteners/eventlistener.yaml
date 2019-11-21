@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: demo-event-listener
+spec:
+  serviceAccountName: demo-sa
+  triggers:
+    - name: build-pipeline-trigger
+      binding:
+        name: build-from-pr-binding
+      template:
+        name: build-from-pr-template
