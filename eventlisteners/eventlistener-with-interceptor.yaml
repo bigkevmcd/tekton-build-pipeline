@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: intercepted-event-listener
+spec:
+  serviceAccountName: demo-sa
+  triggers:
+    - name: intercepted-pipeline-trigger
+      interceptor:
+        header:
+        - name: Pullrequest-Action
+          value: opened
+        - name:  Pullrequest-Repo
+          value: Codertocat/Hello-World
+        objectRef:
+          kind: Service
+          name: demo-interceptor
+          apiVersion: v1
+          namespace: default
+      binding:
+        name: build-from-pr-binding
+      template:
+        name: build-from-pr-template
